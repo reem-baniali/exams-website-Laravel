@@ -5,6 +5,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\OptionController;
 use App\Http\Controllers\QuestionController;
+use Illuminate\Support\Facades\Auth;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,19 +18,38 @@ use App\Http\Controllers\QuestionController;
 |
 */
 
+// publicSite routes
 Route::get('/', function () {
     return view('publicSite.index');
 });
+// Route::get('/allCategoires', function () {
+//     return view('publicSite.allCategories');
+// })->name('allCategories');
+Route::get('/contact', function () {
+    return view('publicSite.contact');
+})->name('contact');
+
+Route::get('/publicCategory', function () {
+    return view('publicSite.category');
+})->name('publicCategory');
+
+Route::get('/publicExam', function () {
+    return view('publicSite.quize');
+})->name('publicExam');
+
+Route::get('/publicQuize', function () {
+    return view('publicSite.quize');
+})->name('publicQuize');
+
+
+
+//adimn routes
 Route::get('/admin', function () {
     return view('adminSite.index');
 });
 Route::get('/admin/manageAdmin', function () {
     return view('adminSite.manageAdmins');
 })->name('manageAdmin');
-
-// Route::get('/admin/manageCategory', function () {
-//     return view('adminSite.manageCategory');
-// })->name('manageCategory');
 
 Route::get('/admin/manageUsers', function () {
     return view('adminSite.manageUsers');
@@ -53,6 +74,10 @@ Route::get('/admin/manageQues', function () {
 Route::get('/admin/manageResult', function () {
     return view('adminSite.manageResult');
 })->name('manageResult');
+
+//categories public site
+Route::get("/show_categories", [CategoryController::class,'index'])->name('show_categories');
+Route::get("/single_categories/{id}", [CategoryController::class,'show'])->name('single_category');
 
 //category route
 Route::get("add_category", [CategoryController::class, 'backendcreate']);
@@ -86,3 +111,20 @@ Route::get('option',[OptionController::class, 'backendindex'])->name('manageOpti
 Route::get("edit_option/{id}", [OptionController::class, 'backendedit'])->name('option.edit');
 Route::post("update_option/{id}", [OptionController::class, 'backendupdate'])->name('option.update');
 Route::get("delete_option/{id}", [OptionController::class, 'backenddestroy'])->name('option.delete');
+
+//login route for user
+Auth::routes();
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('admin/home', [HomeController::class, 'adminHome'])->name('admin.home')->middleware('role_id');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

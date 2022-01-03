@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Exam;
 use Illuminate\Http\Request;
-
+use Illuminate\Pagination\Paginator;
 class CategoryController extends Controller
 {
     /**
@@ -14,7 +15,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+      $categories=Category::all();
+      $exams = Exam::paginate(3);
+       return view('publicSite.allCategories',compact('categories','exams'));
     }
 
      public function backendindex()
@@ -80,9 +83,10 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category)
+    public function show(Category $category,$id)
     {
-        //
+        $singleCategory=Category::find($id);
+       return view('publicSite.allCategories',compact('singleCategory'));
     }
 
     /**
