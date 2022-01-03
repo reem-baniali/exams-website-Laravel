@@ -17,7 +17,7 @@
               way that best for you.
             </span>
           </p>
-          <a href="html/signup.html" class="getStart-link">
+          <a href="{{route('show_categories')  }}" class="getStart-link">
             <button class="home-btn-getStart">
               Get Started
             </button>

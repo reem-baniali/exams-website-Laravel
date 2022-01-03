@@ -6,6 +6,8 @@ use App\Models\Category;
 use App\Models\Exam;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Auth;
+
 class CategoryController extends Controller
 {
     /**
@@ -15,6 +17,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
+      // $user=Auth::user();
+      // return $user->role;
       $categories=Category::all();
       $exams = Exam::paginate(3);
        return view('publicSite.allCategories',compact('categories','exams'));
@@ -55,13 +59,13 @@ class CategoryController extends Controller
      public function backendstore(Request $request)
     {
          $this->validate($request,[
-            'name'=>'required|max:250',
-            'image'=>'required|mimes:jpeg,png,gif,jpg',
+            'name'  =>'required|max:250',
+            'image' =>'required|mimes:jpeg,png,gif,jpg,jfif',
           ]);
 
           if($request->hasFile('image')){
-            $file=$request->image;
-            $new_file=time().$file->getClientOriginalName();
+            $file      =$request->image;
+            $new_file  =time().$file->getClientOriginalName();
             $file->move('storage/category_images/',$new_file);
           };
 
@@ -85,8 +89,10 @@ class CategoryController extends Controller
      */
     public function show(Category $category,$id)
     {
+        $categories=Category::all();
+        $exams = Exam::all();
         $singleCategory=Category::find($id);
-       return view('publicSite.allCategories',compact('singleCategory'));
+       return view('publicSite.allCategories',compact('singleCategory','categories','exams'));
     }
 
     /**

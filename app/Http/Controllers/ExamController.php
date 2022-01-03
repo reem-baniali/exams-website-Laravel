@@ -13,9 +13,13 @@ class ExamController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        //
+        //  $categories   = Category::all();
+        //  $singleCategory = Category::find($id);
+         $singleExam = Exam::find($id);
+        
+        return view('publicSite.quiz', compact('singleExam'));
     }
       public function backendindex()
     {
@@ -55,14 +59,21 @@ class ExamController extends Controller
         $this->validate($request,[
             'title'              =>'required|max:1500',
             'time_estimation'    =>'required|max:11',
-            'number_of_questions'=>'required|max:11'
+            'number_of_questions'=>'required|max:11',
+            'image'=>'required|mimes:jpeg,png,gif,jpg'
 
         ]);
+           if($request->hasFile('image')){
+            $file=$request->image;
+            $new_file=time().$file->getClientOriginalName();
+            $file->move('storage/category_images/',$new_file);
+          };
         Exam::create([
-            'title'              =>$request->title,
-            'time_estimation'    =>$request->time_estimation,
-            'number_of_questions'=>$request->number_of_questions,
-             'category_id'=>$request->category_id
+            'title'               =>$request->title,
+            'image'               =>'storage/category_images/'.$new_file,
+            'time_estimation'     =>$request->time_estimation,
+            'number_of_questions' =>$request->number_of_questions,
+            'category_id'         =>$request->category_id
          ]);
          return redirect()->back();  
     }
@@ -74,9 +85,13 @@ class ExamController extends Controller
      * @param  \App\Models\Exam  $exam
      * @return \Illuminate\Http\Response
      */
-    public function show(Exam $exam)
+    public function show(Exam $exam,$id)
     {
-        //
+         $categories   = Category::all();
+         $singleCategory = Category::find($id);
+         $singleExam = Exam::find($id);
+        
+        return view('publicSite.category', compact('categories', 'singleCategory','singleExam'));
     }
 
     /**
@@ -113,14 +128,16 @@ class ExamController extends Controller
         $exam = Exam::find($id);
 
          $this->validate($request,[
-            'title'=>'required|max:250',
-            'number_of_questions'=>'required',
-            'time_estimation'=>'required',
+            'title'               =>'required|max:250',
+            'number_of_questions' =>'required',
+            'image'               =>'mimes:jpeg,png,gif,jpg,jfif',
+            'time_estimation'     =>'required'
           ]);
 
-        $exam->title = $request->title;
+        $exam->title               = $request->title;
+        $exam->image               = $request->image;
         $exam->number_of_questions = $request->number_of_questions;
-        $exam->time_estimation = $request->time_estimation;
+        $exam->time_estimation     = $request->time_estimation;
         
        
         $exam->update();

@@ -1,95 +1,101 @@
 @extends('publicSite.layouts.master')
 @section('content')
-    <!--Welcoming Seaction-->
-    <section class="welcome" id="welcome">
-      <h1 class="heading " style=" padding-left: 30%;">
-        <span style="color: #404d68;">Welcome</span>
-        <span class="fname"></span>
-      </h1>
-      <p  style=" padding-left: 30%;" class="sub-heading font-weight-bold  m-auto">
-        Choose your quiz to strengthen your knowledge.
-        <br />
-        <br />
-      </p>
-      <div class="container">
-        <div class="categories-container text-center row">
-          <div class="box-container col-md-12 col-lg-3 m-3 p-2">
-            <div class="box text-center">
-              <div class="image m-3">
-                <img src="{{ asset('/imgs/HTMLLOGO.png') }}" alt="" width="200px"/>
-              </div>
-              <h3>HTML</h3>
-              <p>
-                HTML is a primary markup language for creating websites. Test
-                your knowledge with this basic HTML quiz made especially for
-                beginners.
-                <br />
-                <span class="time-text">
-                  <br />
-                  The test contains 7 questions.
-                  <br />
-                  Quiz duration: 15 sec per question.
-                  <br />
-                  <br />
-                </span>
-              </p>
-              <a href="quize.html" class="category-button start_btn">
-                Start Quiz!
-              </a>
-            </div>
-          </div>
-          <div class="box-container col-md-12 col-lg-3 m-3 p-2">
-            <div class="box text-center">
-              <div class="image m-3">
-                <img src="{{ asset('/imgs/CSSLOGO.png') }}" alt="" width="200px"/>
-              </div>
-              <h3>CSS</h3>
-              <p>
-                (CSS) Add the style and graphics to your page to make it
-                interactive.Test your knowledge with this basic CSS quiz made
-                especially for beginners.
-                <br />
+<style>
+  #categories_container{
+   background-color: #fef4e8;
+   width: 100%
+  }
+  #mainText {
+    font-family: 'Scheherazade New', serif;
+    color: #20325a;
+    font-size: 35px;
+    margin-bottom: 20px;
+  }
+  #subText{
+    font-family: 'Scheherazade New', serif;
+    color: #20325a;
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+   .page_link>a{
+     text-decoration: none;
+     color:#20325a;
+    font-size: 15px;
+   }
+   .page_link>a:hover {
 
-                <span class="time-text">
-                  <br />
-                  The test contains 7 questions.
-                  <br />
-                  Quiz duration: 15 sec per question.
-                  <br />
-                  <br />
-                </span>
-              </p>
-              <a href="quize.html" class="category-button start_btn">
-                Start Quiz!
-              </a>
-            </div>
-          </div>
-          <div class="box-container col-md-12 col-lg-3 m-3 p-2">
-            <div class="box text-center">
-              <div class="image m-3">
-                <img src="{{ asset('/imgs/JSLOGO.png') }}" alt="" width="200px"/>
-              </div>
-              <h3>JavaScript</h3>
-              <p>
-                JS is programming language that adds interactivity to your
-                website. Test your knowledge with this basic JS quiz made
-                especially for beginners.
-                <br />
-                <span class="time-text">
-                  <br />
-                  The test contains 7 questions.
-                  <br />
-                  Quiz duration: 15 sec per question.
-                  <br />
-                  <br />
-                </span>
-              </p>
-              <a href="quize.html" class="category-button start_btn">
-                Start Quiz!
-              </a>
-            </div>
-          </div>
-        </div>
+    font-weight: 700;
+    color: #ff8c00;
+
+  }
+
+</style>
+<section class="ftco-section ">
+  <div class="container" id="categories_container" >
+    {{-- title dive --}}
+      <div class="row justify-content-center mb-5 pb-2">
+<div class="col-md-8  heading-section ftco-animate">
+  <h4 id="mainText" class="mb-2 mt-3"><strong>{{ $singleCategory ->name }}</strong> <span>Exams</span></h4>
+  {{-- <p>Separated they live in. A small river named Duden flows 
+    by their place and supplies it with the necessary regelialia. 
+    It is a paradisematic country</p> --}}
+    <div class="page_link">
+      <a href="{{ route('index') }}">Home</a>
+      <a href="{{ route('show_categories') }}">/ categories</a>
+  
+      <a href={{ route('single_category',$singleCategory ->id) }}>/ {{ $singleCategory ->name }}</a>
+    
+    </div>
+</div>
+</div>
+      <div class="row">
+
+{{-- start aside div - top categories --}}
+<div class="col-lg-2" style="border-right: solid 2px grey">
+  <div class="left_sidebar_area">
+    <aside class="left_widgets p_filter_widgets" >
+      <div  >
+        <h5 id ="subText"><strong>Top Categories</strong></h5>
       </div>
-    </section>
-  @endsection
+      <div class="widgets_inner">
+        <ul class="list">
+          @foreach ($categories as $category)
+            <li class="category-title page_link" style="font-size:18px">
+               <a href="{{ route('single_category',$category->id )}}">
+                {{ $category->name }}</a>
+            </li>
+            @endforeach
+        </ul>
+      </div>
+    </aside>
+  </div>
+</div>
+{{-- End aside div --}}
+
+{{-- main content --}}
+<div class="col-10 d-flex justify-content-center gap-5">
+  @foreach ($singleCategory->exam as $exam)
+  <div class="col-4" style="max-width: fit-content; overflow:hidden">
+  <div class="card" style="width: 18rem; ">
+    <img height="250px" src="{{ asset($exam->image) }}" class="card-img-top" alt="Company-logo">
+    <div class="card-body">
+      <h5 class="card-title">{{ $exam->name }}</h5>
+      <p class="card-text text-truncate">{{ $exam->time_estimation }}</p>
+       <p class="card-text text-truncate">{{ $exam->number_of_questions }}</p>
+      <a href="{{ route('single_exam',$exam->id) }}" class="btn btn-primary">Get Started </a>
+    </div>
+  </div>
+</div>
+@endforeach
+</div>
+</div>
+{{-- end main content --}}
+
+</div>
+</div>
+
+</section>
+
+
+@endsection
+

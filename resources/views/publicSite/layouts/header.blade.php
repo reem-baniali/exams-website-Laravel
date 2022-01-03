@@ -49,11 +49,14 @@
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                                 </li>
                             @endif
+                            
 
                             @if (Route::has('register'))
+                            <ul class="navbar-nav">
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                                 </li>
+                            </ul>
                             @endif
                         @else
                             <li class="nav-item dropdown">
@@ -73,7 +76,14 @@
                                     </form>
                                 </div>
                             </li>
+                            @if ( Auth::user()->role_id == 1 )
+                        
+                         <li class="nav-item home-btn-login">
+                                    <a class="nav-link" href="{{ route('admin-site') }}"> Admin Site </a>
+                                </li>
+                                 @endif
                         @endguest
+                        
           </ul>
         </div>
       </div>

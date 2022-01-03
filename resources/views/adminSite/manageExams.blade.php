@@ -18,7 +18,7 @@
                                         <div class="card-header">Manage Exam</div>
                                         <div class="card-body card-block">
                                             <form action="@if($update==false){{ route('exam.store') }} @else {{ route('exam.update',$exam->id) }}@endif" 
-                                                method="post" >
+                                                method="post" enctype="multipart/form-data" >
                                                 @csrf
                                                 <div class="form-group">
                                                     <div class="input-group">
@@ -39,6 +39,7 @@
                                                         </select>
                                                     </div>
                                                 </div>
+                                                 
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <div class="input-group-addon">
@@ -48,6 +49,18 @@
                                                         name="title"  
                                                         class="form-control" placeholder="exam title"
                                                         value="@if($update == true){{ $exam->title }}@endif">
+                                                    </div>
+                                                </div>
+
+                                                    <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-plus"></i>
+                                                        </div>
+                                                        <input type="file" id="exam_image" 
+                                                        name="image"  class="form-control"
+                                                        placeholder="number of questions"
+                                                        value="@if($update == true){{ $exam->image }}@endif">
                                                     </div>
                                                 </div>
 
@@ -96,6 +109,7 @@
                                     <tr>
                                         <th>Exam ID</th>
                                         <th>Exam Category</th>
+                                        <th>Exam Image</th>
                                         <th>Exam Title</th>
                                         <th>Number of Qustions</th>
                                         <th>Time Estimation</th>
@@ -112,6 +126,7 @@
                                           <td> {{ $category->name }}</td>
                                           @endif
                                            @endforeach
+                                           <td><img src="{{  $exam->image }}" alt="exam-img"></td>
                                             <td>{{ $exam->title }}</td>
                                             <td>{{ $exam->number_of_questions }} questions</td>
                                             <td>{{ $exam->time_estimation }} minutes</td>

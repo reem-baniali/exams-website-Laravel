@@ -21,21 +21,23 @@ use Illuminate\Support\Facades\Auth;
 // publicSite routes
 Route::get('/', function () {
     return view('publicSite.index');
-});
+})->name('index');
+
 // Route::get('/allCategoires', function () {
 //     return view('publicSite.allCategories');
 // })->name('allCategories');
+
 Route::get('/contact', function () {
     return view('publicSite.contact');
 })->name('contact');
 
-Route::get('/publicCategory', function () {
-    return view('publicSite.category');
-})->name('publicCategory');
+// Route::get('/publicCategory', function () {
+//     return view('publicSite.category');
+// })->name('publicCategory');
 
 Route::get('/publicExam', function () {
     return view('publicSite.quize');
-})->name('publicExam');
+})->name('publicExam')->middleware('auth');
 
 Route::get('/publicQuize', function () {
     return view('publicSite.quize');
@@ -46,7 +48,7 @@ Route::get('/publicQuize', function () {
 //adimn routes
 Route::get('/admin', function () {
     return view('adminSite.index');
-});
+})->name('admin-site');
 Route::get('/admin/manageAdmin', function () {
     return view('adminSite.manageAdmins');
 })->name('manageAdmin');
@@ -77,7 +79,10 @@ Route::get('/admin/manageResult', function () {
 
 //categories public site
 Route::get("/show_categories", [CategoryController::class,'index'])->name('show_categories');
-Route::get("/single_categories/{id}", [CategoryController::class,'show'])->name('single_category');
+Route::get('/category_show/{id}', [ExamController::class, 'show'])->name('single_category');
+Route::get('/exam_show/{id}', [ExamController::class, 'index'])->name('single_exam');
+Route::post('/user_answer', [ExamController::class, 'store'])->name('answer.store');
+
 
 //category route
 Route::get("add_category", [CategoryController::class, 'backendcreate']);
